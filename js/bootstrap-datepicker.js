@@ -677,12 +677,21 @@
 			html += '</tr>';
 			this.picker.find('.datepicker-days thead').append(html);
 		},
-
+		
 		fillMonths: function(){
-			var html = '',
-			i = 0;
-			while (i < 12){
-				html += '<span class="month">'+dates[this.o.language].monthsShort[i++]+'</span>';
+			var d = new Date(this.viewDate);
+			var year = d.getUTCFullYear();
+			var html = '';
+			var i = 0;
+			while (i < 12) {
+				var thisMonth = UTCDate(year, i, 1);
+				var clsName = this.getClassNames(thisMonth);
+				clsName.push('month');
+				clsName = $.unique(clsName);
+				clsName = clsName.filter(function(el) {
+					return ['old', 'new'].indexOf(el) === -1;
+				});
+				html += '<span class="' + clsName.join(' ') + '">'+dates[this.o.language].monthsShort[i++]+'</span>';
 			}
 			this.picker.find('.datepicker-months td').html(html);
 		},
